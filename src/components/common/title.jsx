@@ -6,7 +6,7 @@ const Title = () => {
             <div className="circle red"></div>
             <div className="circle yellow"></div>
             <div className="circle green"></div>
-            <div className="title-bar-title">AirCall</div>
+            <div className="title-bar-title">Phone</div>
         </div>
     )
 }
