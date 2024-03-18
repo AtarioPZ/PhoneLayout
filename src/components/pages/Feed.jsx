@@ -1,10 +1,31 @@
+import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
+
 const Feed = () => {
-    const feedItems = [
-        { date: '2024-03-15', type: 'call', name: 'John Doe', time: '10:30 AM', detail: 'Tried to call John Doe' },
-        { date: '2024-03-14', type: 'receive', name: 'Jane Smith', time: '11:45 AM', detail: 'Missed call from Jane Smith' },
-        { date: '2024-03-13', type: 'call', name: 'Alice Johnson', time: '02:15 PM', detail: 'Called Alice Johnson' },
-        { date: '2024-03-12', type: 'receive', name: 'Bob Williams', time: '04:20 PM', detail: 'Received call from Bob Williams' }
-    ];
+    const [feedItems, setFeedItems] = useState([]);
+
+    const fetchFeedItems = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/activities`);
+            if (!response.ok) {
+                throw new Error('Error fetching feed items');
+            }
+            const data = await response.json();
+            if (data.length >= 6) {
+                setFeedItems([data[5]]); 
+            } else {
+                console.error('Insufficient data to fetch the 6th item');
+            }
+        } catch (error) {
+            console.error('Error fetching feed items:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        fetchFeedItems();
+    }, []);
 
     return (
         <div className='text-black'>
@@ -12,15 +33,18 @@ const Feed = () => {
             {feedItems.map((item, index) => (
                 <div key={index} className="border-b border-gray-200 py-3">
                     <div className="flex items-center justify-between mb-1">
-                        <span className="text-gray-600">{item.date}</span>
-                        <span>{item.time}</span>
+                        <span className="text-gray-600">{new Date(item.created_at).toLocaleDateString()}</span>
+                        <span>{new Date(item.created_at).toLocaleTimeString()}</span>
                     </div>
                     <div className="flex items-center">
-                        <span className={`mr-2 ${item.type === 'call' ? 'text-green-500' : 'text-red-500'}`}>
-                            <i className={`fas fa-phone-alt ${item.type === 'call' ? 'text-green-500' : 'text-red-500'}`}></i>
+                        <span className={`mr-2 ${item.direction === 'inbound' ? 'text-green-500' : 'text-red-500'}`}>
+                            <FontAwesomeIcon
+                                icon={faPhone}
+                                className={`w-6 h-6 me-2 ${item.direction === 'inbound' ? 'text-green-500' : 'text-red-500'}`}
+                            />
                         </span>
-                        <span className="mr-auto">{item.name}</span>
-                        <span>{item.detail}</span>
+                        <span className="mr-auto">{item.to}</span>
+                        <span>{item.call_type}</span>
                     </div>
                 </div>
             ))}
