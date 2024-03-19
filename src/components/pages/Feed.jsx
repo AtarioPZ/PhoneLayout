@@ -13,7 +13,7 @@ const Feed = () => {
             }
             const data = await response.json();
             if (data.length >= 5) {
-                setFeedItems(data.slice(0, 3));
+                setFeedItems(data.slice(0, 7));
             } else {
                 console.error('Insufficient data to fetch the first 5 items');
             }
