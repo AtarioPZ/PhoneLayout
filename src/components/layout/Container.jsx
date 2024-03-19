@@ -5,8 +5,8 @@ import { Outlet } from "react-router-dom";
 
 const Container = () => {
     return (
-        <div className="flex justify-center items-top h-screen p-10">
-            <div className="bg-white rounded-lg shadow-lg" style={{ width: '90vw', height: '90vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div className="flex justify-center items-top h-screen p-1">
+            <div className="bg-white rounded-lg shadow-lg" style={{ width: '100vw', height: '90vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
                     <section> <Title /> </section>
                     <section> <Header /> </section>
