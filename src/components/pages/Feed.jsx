@@ -37,7 +37,7 @@ const Feed = () => {
                             {new Date(item.created_at).toLocaleDateString()}
                         </span>
                     </div>
-                    <div className="flex items-center rounded-lg border border-gray-400 p-2">
+                    <div className="flex items-center rounded-lg border border-gray-300 p-2">
                         <section>
                             <span className={`mr-2 relative ${item.direction === 'inbound' ? 'text-green-500' : 'text-green-500'}`}>
                                 <FontAwesomeIcon
