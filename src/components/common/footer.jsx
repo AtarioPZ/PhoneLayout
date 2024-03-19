@@ -3,7 +3,7 @@ import { faTh, faPhone, faUser, faCog } from '@fortawesome/free-solid-svg-icons'
 
 const Footer = () => {
     return (
-        <div className="mt-auto">
+        <div className="mt-auto bg-white">
             <div className="text-gray-500 w-full flex justify-between  py-4 px-8 text-white">
                 <div className="flex justify-center items-center">
                     <FontAwesomeIcon icon={faPhone} size="lg" className="mx-4" />
