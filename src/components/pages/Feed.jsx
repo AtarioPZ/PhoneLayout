@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone, faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faArrowDown, faArrowUp, faArchive } from "@fortawesome/free-solid-svg-icons";
+
+import CallModal from "../CallModal";
+import { useData } from "../../utils/DataProvider";
 
 const Feed = () => {
     const [feedItems, setFeedItems] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const { addToArchive } = useData();
 
     const fetchFeedItems = async () => {
         try {
@@ -21,15 +26,30 @@ const Feed = () => {
             console.error('Error fetching feed items:', error);
         }
     };
-    
 
     useEffect(() => {
         fetchFeedItems();
     }, []);
 
+    const openDetailsModal = (item) => {
+        setSelectedItem(item);
+    };
+
+    const closeDetailsModal = () => {
+        setSelectedItem(null);
+    };
+
+    const archiveAll = () => {
+        addToArchive(feedItems);
+        setFeedItems([]);
+      };
+
     return (
         <div className='text-black p-2'>
-            <h2 className="text-lg font-semibold mb-4">Activity Feed</h2>
+            <h2 className="pl-2 text-lg font-semibold mb-4">Activity Feed</h2>
+            <div className="rounded-lg bg-gray-400 p-2 inline-block ml-2 hover:bg-green-400">
+                <FontAwesomeIcon icon={faArchive} /> <button onClick={archiveAll}>ARCHIVE ALL</button>
+            </div>            
             {feedItems.map((item, index) => (
                 <div key={index} className="border-b border-gray-200 py-3">
                     <div className="flex items-center justify-center mb-1">
@@ -37,7 +57,7 @@ const Feed = () => {
                             {new Date(item.created_at).toLocaleDateString()}
                         </span>
                     </div>
-                    <div className="flex items-center rounded-lg border border-gray-300 p-2">
+                    <div className="flex items-center rounded-lg border border-gray-300 p-2 hover:bg-gray-100 cursor-pointer" onClick={() => openDetailsModal(item)}>
                         <section>
                             <span className={`mr-2 relative ${item.direction === 'inbound' ? 'text-green-500' : 'text-green-500'}`}>
                                 <FontAwesomeIcon
@@ -70,6 +90,7 @@ const Feed = () => {
 
                 </div>
             ))}
+            {selectedItem && <CallModal item={selectedItem} onClose={closeDetailsModal} />}
         </div>
     );
 }

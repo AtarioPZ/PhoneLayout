@@ -3,15 +3,21 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhone, faSliders } from "@fortawesome/free-solid-svg-icons";
 
+import { useData } from "../../utils/DataProvider";
+
 const Header = () => {
   const [activeLink, setActiveLink] = useState("");
   const location = useLocation();
+
+  const { archivedData } = useData();
 
   useEffect(() => {
     if (location.pathname === "/feed") {
       setActiveLink("Activity");
     } else if (location.pathname === "/all-calls") {
       setActiveLink("All Calls");
+    }  else if (location.pathname === "/archives") {
+      setActiveLink("Archives");
     } else {
       setActiveLink("Activity");
     }
@@ -57,6 +63,21 @@ const Header = () => {
               All Calls
             </Link>
           </li>
+          {archivedData.length > 0 && (
+            <li className="me-2">
+              <Link
+                to="/archives"
+                className={`inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg ${
+                  activeLink === "Archives"
+                    ? "border-red-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500 group"
+                    : "hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
+                }`}
+                onClick={() => setActiveLink("Archives")}
+              >
+                Archives
+              </Link>
+            </li>
+          )}
           <li className="me-2">
             <a
               href="#"
